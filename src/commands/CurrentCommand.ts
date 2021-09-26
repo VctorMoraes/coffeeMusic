@@ -12,5 +12,10 @@ export const execute = async (
     const guildQueue = (interaction.client as Bot).player.getQueue(
         interaction.guildId || '',
     );
-    await interaction.reply(`${guildQueue?.nowPlaying}`);
+    const { baseEmbed } = guildQueue?.nowPlaying.data;
+
+    console.log(baseEmbed);
+
+    baseEmbed.setAuthor('Now playing');
+    interaction.reply({ embeds: [baseEmbed] });
 };

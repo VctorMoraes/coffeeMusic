@@ -14,5 +14,5 @@ export const execute = async (
     );
     const song = guildQueue?.nowPlaying;
     guildQueue?.setPaused(false);
-    await interaction.reply(`${song?.name} resumed`);
+    await interaction.reply(`\`${song?.name}\` resumed`);
 };

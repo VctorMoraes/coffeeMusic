@@ -19,5 +19,5 @@ export const execute = async (
 
     guildQueue?.seek((time || 0) * 1000);
 
-    await interaction.reply('sei la');
+    await interaction.reply(`${guildQueue?.createProgressBar().prettier}`);
 };

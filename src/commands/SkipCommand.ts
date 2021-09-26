@@ -13,6 +13,5 @@ export const execute = async (
         interaction.guildId || '',
     );
     const song = guildQueue?.skip();
-    await interaction.reply(`${song?.name} skiped.`);
-    await interaction.deleteReply();
+    await interaction.reply(`\`${song?.name}\` skipped.`);
 };

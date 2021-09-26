@@ -8,5 +8,5 @@ export const data = new SlashCommandBuilder()
 export const execute = async (
     interaction: CommandInteraction,
 ): Promise<void> => {
-    await interaction.reply('Bola!');
+    await interaction.reply('Pong!');
 };
