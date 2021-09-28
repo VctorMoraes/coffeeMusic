@@ -9,9 +9,14 @@ export const data = new SlashCommandBuilder()
 export const execute = async (
     interaction: CommandInteraction,
 ): Promise<void> => {
-    const guildQueue = (interaction.client as Bot).player.getQueue(
-        interaction.guildId || '',
+    const guildQueue = (interaction.client as Bot).player.getGuildQueue(
+        interaction,
     );
-    guildQueue?.clearQueue();
-    await interaction.reply('Queue has been cleared.');
+
+    if (guildQueue) {
+        guildQueue?.clearQueue();
+        await interaction.reply('Queue has been cleared.');
+    } else {
+        await interaction.reply('Queue is already empty.');
+    }
 };

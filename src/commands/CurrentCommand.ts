@@ -9,13 +9,20 @@ export const data = new SlashCommandBuilder()
 export const execute = async (
     interaction: CommandInteraction,
 ): Promise<void> => {
-    const guildQueue = (interaction.client as Bot).player.getQueue(
-        interaction.guildId || '',
+    const guildQueue = (interaction.client as Bot).player.getGuildQueue(
+        interaction,
     );
-    const { baseEmbed } = guildQueue?.nowPlaying.data;
+    const nowPlaying = guildQueue?.nowPlaying;
 
-    console.log(baseEmbed);
+    if (nowPlaying) {
+        const { baseEmbed } = nowPlaying.data;
 
-    baseEmbed.setAuthor('Now playing');
-    interaction.reply({ embeds: [baseEmbed] });
+        baseEmbed.setDescription(
+            guildQueue?.createProgressBar().prettier || '',
+        );
+        baseEmbed.setAuthor('Now playing');
+        interaction.reply({ embeds: [baseEmbed] });
+    } else {
+        interaction.reply('Queue is empty.');
+    }
 };

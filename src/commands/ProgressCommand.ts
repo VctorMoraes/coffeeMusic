@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { CommandInteraction } from 'discord.js';
+import { CommandInteraction, MessageEmbed } from 'discord.js';
 import Bot from '../client/Bot';
 
 export const data = new SlashCommandBuilder()
@@ -12,5 +12,11 @@ export const execute = async (
     const guildQueue = (interaction.client as Bot).player.getQueue(
         interaction.guildId || '',
     );
-    await interaction.reply(`${guildQueue?.createProgressBar().prettier}`);
+    const baseEmbed = new MessageEmbed()
+        .setColor('#0099ff')
+        .setTitle(guildQueue?.createProgressBar().prettier || '')
+        .setThumbnail('https://c.tenor.com/Sq_ZkjCNM1AAAAAd/catjam.gif')
+        .setAuthor('Progress');
+
+    await interaction.reply({ embeds: [baseEmbed] });
 };

@@ -16,7 +16,7 @@ export const execute = async (
     const guildQueue = (interaction.client as Bot).player.getQueue(
         interaction.guildId || '',
     );
-
+    // TODO: Fix reply
     guildQueue?.seek((time || 0) * 1000);
 
     await interaction.reply(`${guildQueue?.createProgressBar().prettier}`);

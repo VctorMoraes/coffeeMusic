@@ -1,10 +1,6 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
-import {
-    CommandInteraction,
-    GuildMember,
-    User,
-    MessageEmbed,
-} from 'discord.js';
+import { Song } from 'discord-music-player';
+import { CommandInteraction } from 'discord.js';
 import Bot from '../client/Bot';
 
 export const data = new SlashCommandBuilder()
@@ -24,29 +20,12 @@ export const execute = async (
 
     const request = interaction.options.getString('song');
     const bot = interaction.client as Bot;
-    const queue = bot.player.createQueue(interaction.guildId || '');
+    const song = await bot.player.play(request || '', interaction);
 
-    await queue.join((interaction.member as GuildMember).voice.channel || '');
+    if (song instanceof Song) {
+        const { baseEmbed } = song.data;
+        baseEmbed.setAuthor('Added to queue');
 
-    const song = await queue.play(request || '');
-
-    const user = interaction.member?.user as User;
-    const baseEmbed = new MessageEmbed()
-        .setColor('#0099ff')
-        .setTitle(song.name)
-        .setURL(song.url)
-        .setThumbnail(song.thumbnail)
-        .setTimestamp(new Date())
-        .setFooter(
-            `Requested by ${user.username}`,
-            user.avatarURL() || user.defaultAvatarURL,
-        );
-
-    song.setData({
-        interaction,
-        baseEmbed,
-    });
-
-    baseEmbed.setAuthor('Added to queue');
-    interaction.editReply({ embeds: [baseEmbed] });
+        interaction.editReply({ embeds: [baseEmbed] });
+    }
 };

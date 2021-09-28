@@ -13,6 +13,11 @@ export const execute = async (
         interaction.guildId || '',
     );
     const song = guildQueue?.nowPlaying;
-    guildQueue?.setPaused(true);
-    await interaction.reply(`\`${song?.name}\` paused.`);
+
+    if (song) {
+        guildQueue?.setPaused(true);
+        await interaction.reply(`\`${song?.name}\` paused.`);
+    } else {
+        await interaction.reply('Queue is empty.');
+    }
 };
