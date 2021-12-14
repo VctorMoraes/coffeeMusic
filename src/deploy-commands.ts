@@ -25,13 +25,9 @@ const loadCommands = async (): Promise<unknown> => {
         process.env.APP_TOKEN || '',
     );
 
-    rest.put(
-        Routes.applicationGuildCommands(
-            process.env.APP_CLIENT_ID || '',
-            process.env.APP_GUILD_ID || '',
-        ),
-        { body: await loadCommands() },
-    )
+    rest.put(Routes.applicationCommands(process.env.APP_CLIENT_ID || ''), {
+        body: await loadCommands(),
+    })
         .then(() =>
             console.log('Successfully registered application commands.'),
         )
