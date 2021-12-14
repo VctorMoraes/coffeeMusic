@@ -6,7 +6,7 @@
   "engines": {"node": "16.x"},
   "scripts": {
     "build": "tsc",
-    "start": "node ./bin/main.js",
+    "start": "ts-node ./src/main.ts",
     "dev": "ts-node-dev --inspect --transpile-only --ignore-watch node_modules ./src/main.ts",
     "deploy:commands": "ts-node-dev --inspect --transpile-only --ignore-watch node_modules ./src/deploy-commands.ts",
     "lint": "eslint --ext .ts,.js --ignore-path .gitignore ."
