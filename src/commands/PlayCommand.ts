@@ -1,5 +1,4 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { Song } from 'discord-music-player';
 import { CommandInteraction } from 'discord.js';
 import Bot from '../client/Bot';
 
@@ -20,12 +19,5 @@ export const execute = async (
 
     const request = interaction.options.getString('song');
     const bot = interaction.client as Bot;
-    const song = await bot.player.play(request || '', interaction);
-
-    if (song instanceof Song) {
-        const { baseEmbed } = song.data;
-        baseEmbed.setAuthor('Added to queue');
-
-        interaction.editReply({ embeds: [baseEmbed] });
-    }
+    await bot.player.play(request || '', interaction);
 };

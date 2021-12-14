@@ -4,11 +4,11 @@ import {
     PlayerOptions,
     Playlist,
     Queue,
-    Song,
 } from 'discord-music-player';
 import {
     Client,
     Collection,
+    CommandInteraction,
     GuildMember,
     Interaction,
     MessageEmbed,
@@ -49,8 +49,8 @@ export default class MusicPlayer extends Player {
 
     public async play(
         request: string,
-        interaction: Interaction,
-    ): Promise<Song | Playlist> {
+        interaction: CommandInteraction,
+    ): Promise<CommandInteraction> {
         const queue = this.createQueue(interaction.guildId || '');
         await queue.join(
             (interaction.member as GuildMember).voice.channel || '',
@@ -59,27 +59,35 @@ export default class MusicPlayer extends Player {
         if (request.includes('/playlist?list=')) {
             this.setupPlaylist(await queue.playlist(request), interaction);
         }
-
-        const song = await queue.play(request);
-
         const user = interaction.member?.user as User;
         const baseEmbed = new MessageEmbed()
             .setColor('#000000')
-            .setTitle(song.name)
-            .setURL(song.url)
-            .setThumbnail(song.thumbnail)
             .setTimestamp(new Date())
             .setFooter(
                 `Requested by ${user.username}`,
                 user.avatarURL() || user.defaultAvatarURL,
             );
 
-        song.setData({
-            interaction,
-            baseEmbed,
-        });
+        await queue
+            .play(request)
+            .then(song => {
+                baseEmbed
+                    .setTitle(song.name)
+                    .setURL(song.url)
+                    .setThumbnail(song.thumbnail);
 
-        return song;
+                song.setData({
+                    interaction,
+                    baseEmbed,
+                });
+
+                baseEmbed.setAuthor('Added to queue');
+            })
+            .catch(() => {
+                baseEmbed.setAuthor('Song not found');
+            });
+        interaction.editReply({ embeds: [baseEmbed] });
+        return interaction;
     }
 
     private setupPlaylist = async (
