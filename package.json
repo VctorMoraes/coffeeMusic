@@ -1,11 +1,11 @@
 {
   "name": "coffee_music",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "main.js",
   "license": "MIT",
   "scripts": {
     "build": "tsc",
-    "start": "node ./src/main.js",
+    "start": "node ./bin/main.js",
     "dev": "ts-node-dev --inspect --transpile-only --ignore-watch node_modules ./src/main.ts",
     "deploy:commands": "ts-node-dev --inspect --transpile-only --ignore-watch node_modules ./src/deploy-commands.ts",
     "lint": "eslint --ext .ts,.js --ignore-path .gitignore ."
