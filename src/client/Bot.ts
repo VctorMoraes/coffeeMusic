@@ -26,7 +26,7 @@ export default class Bot extends Client {
 
     public async start(): Promise<void> {
         this.player = new MusicPlayer(this, {
-            timeout: 180000,
+            timeout: 30000,
         });
 
         this.login(process.env.APP_TOKEN);
