@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc",
-    "start": "node ./bin/main.js",
+    "start": "node ./src/main.js",
     "dev": "ts-node-dev --inspect --transpile-only --ignore-watch node_modules ./src/main.ts",
     "deploy:commands": "ts-node-dev --inspect --transpile-only --ignore-watch node_modules ./src/deploy-commands.ts",
     "lint": "eslint --ext .ts,.js --ignore-path .gitignore ."
